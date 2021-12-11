@@ -1,21 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useReducer} from 'react';
+import { createNativeStackNavigator  } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from './Screens/Login/LoginScreen';
+import AccountScreen from './Screens/Account/AccountScreen';
+import {
+  UserContextProvider,
+  userReducer,
+  initialUserState,
+} from './Context/userContext';
+import TransferScreen from './Screens/Transfer/TransferScreen';
+
+const Stack = createNativeStackNavigator ();
 
 export default function App() {
+
+  const [userState, userDispatch] = useReducer(userReducer, initialUserState);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+          <UserContextProvider value={{ userState, userDispatch }}>
+              <Stack.Navigator initialRouteName="Home">
+                  <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
+                  <Stack.Screen name="AccountScreen" component={AccountScreen} options={{ headerShown: false }}/>
+                  <Stack.Screen name="TransferScreen" component={TransferScreen} options={{ headerShown: false }}/>
+             </Stack.Navigator>
+          </UserContextProvider>
+      </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
