@@ -4,11 +4,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  logo: {
-    minHeight: 150,
-    width: 260,
-    resizeMode: 'contain',
-  },
   loginView: {
     flex: 0.8,
     alignItems: 'center',
@@ -16,8 +11,13 @@ const styles = StyleSheet.create({
     maxHeight: 600,
     justifyContent: 'space-around',
   },
+  logo: {
+    minHeight: 150,
+    width: 260,
+    resizeMode: 'contain',
+  },
   loginInput: {
-    width: '100%',
+    width: '90%',
     alignItems: 'center',
     maxWidth: 400,
   },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  inputAccount: {
+  accountInput: {
     marginBottom: 12,
   },
   helperText: {

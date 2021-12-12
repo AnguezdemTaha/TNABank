@@ -13,8 +13,7 @@ type AccountProps = {
 export type AccountInfosProps = AccountProps & React.ComponentProps<typeof View>;
 
 const AccountInfo: React.FC<AccountInfosProps> = (props: AccountInfosProps) => {
-  const { style, account, index, userName, setValue, ...otherProps } = props;
-  console.log('account :', account);
+  const { style, account, index, userName, setValue } = props;
   return (
     <TouchableOpacity
       style={styles.accountView}

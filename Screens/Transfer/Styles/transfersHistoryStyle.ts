@@ -7,32 +7,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
   },
-  userName: {
-    color: Colors.secondary,
-    fontSize: 18,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-  },
-  accountList: {
+  transferList: {
     width: '100%',
     alignItems: 'center',
-  },
-  loginView: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  InputAccount: {
-    marginBottom: 12,
   },
   scrollContainer: {
     width: '80%',
   },
-  transferButton: {
-    marginBottom: 40,
-  },
 
-  accountView: {
+  transferView: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -43,7 +26,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
   },
-  accountInfos: {},
+  transferInfos: {},
   transferDate: {
     fontSize: 14,
     color: '#345654',
@@ -53,7 +36,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 8,
   },
-  accountSold: {
+  amount: {
     color: Colors.black,
   },
 });

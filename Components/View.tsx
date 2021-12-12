@@ -1,4 +1,4 @@
-import { View as DefaultView, StyleSheet } from 'react-native';
+import { View as DefaultView } from 'react-native';
 import * as React from 'react';
 import Colors from '../Constants/Colors';
 

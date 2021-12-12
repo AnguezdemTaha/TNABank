@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
         <Pressable
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? colorOnPress : '#F4F555',
+              backgroundColor: pressed ? colorOnPress : Colors.primary,
             },
             styles.pressable,
           ]}
@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
           }}
           {...otherProps}
         >
-          <AntDesign name="left" size={28} color="#000000" />
+          <AntDesign name="left" size={28} color="black" />
         </Pressable>
       )}
       <Image source={require('../assets/images/logo.png')} style={styles.logo} />

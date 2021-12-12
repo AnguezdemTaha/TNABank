@@ -6,21 +6,22 @@ import { HelperText } from 'react-native-paper';
 import Colors from '../../Constants/Colors';
 import styles from './loginStyle';
 import { baseUrl } from '../../client';
-import Button from '../../Components/Button';
-import { TextInput, View } from '../../Components';
+import { Button, TextInput, View } from '../../Components';
+
 import { UserContext } from '../../Context/userContext';
 import { AccountScreen } from '../../Constants/Screens';
+import { User } from '../../types/user';
 
 const LoginScreen = ({ navigation }: any) => {
   const userContext = useContext(UserContext);
   const { userState, userDispatch } = userContext;
 
   const [error, setError] = useState(false);
-  const [userId, setUserId] = useState<number>(0);
+  const [user, setUser] = useState<User>();
 
-  const handleSubmit = async (id: number) => {
+  const handleSubmit = async (userLogin: User | undefined) => {
     axios
-      .get(`${baseUrl}/users/${id}`)
+      .get(`${baseUrl}/users/${userLogin?.id}`)
       .then((response) => {
         if (response.data) {
           setError(false);
@@ -37,7 +38,7 @@ const LoginScreen = ({ navigation }: any) => {
         }
       })
       .catch((error) => {
-        setError(true);
+        alert('SERVER ERROR !');
       });
   };
 
@@ -45,20 +46,23 @@ const LoginScreen = ({ navigation }: any) => {
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
       <StatusBar animated backgroundColor="#000000" />
       <View style={styles.loginView}>
-        <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+        <Image source={require('../../assets/images/icon.png')} style={styles.logo} />
         <View style={styles.loginInput}>
           <TextInput
             fullWidth
+            keyboardType="numeric"
             label="Id du compte"
             color={error ? Colors.error : Colors.primary}
-            value={userId}
+            value={user?.id}
             onChangeText={(id: number) => {
-              setUserId(id);
+              setUser((prevUser) => ({
+                id,
+              }));
             }}
             leftIcon={{ name: 'login' }}
-            style={styles.inputAccount}
+            style={styles.accountInput}
           />
-          <Button fullWidth color={Colors.primary} onPress={() => handleSubmit(userId)}>
+          <Button fullWidth color={Colors.primary} onPress={() => handleSubmit(user)}>
             Connexion
           </Button>
         </View>

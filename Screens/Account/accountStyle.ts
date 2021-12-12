@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
     paddingBottom: 26,
     width: '80%',
   },
-  accounts: {
+  accountsText: {
     color: Colors.green,
     paddingBottom: 26,
   },
   scrollContainer: {},
   buttonView: {
-    width: '100%',
+    width: '90%',
     alignContent: 'center',
     alignItems: 'center',
     flex: 0.2,

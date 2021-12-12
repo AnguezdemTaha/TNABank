@@ -5,13 +5,13 @@ const initialUserState: User = {
   name: '',
 };
 interface UserInfos {
-    id?: number;
-    name: string;
+  id?: number;
+  name: string;
 }
 
 interface UserActions {
-    type: 'ADD_INFO' | 'REMOVE_INFO';
-    payload: UserInfos
+  type: 'ADD_INFO' | 'REMOVE_INFO';
+  payload: UserInfos;
 }
 
 export const userReducer = (state: User, action: UserActions): User => {
@@ -29,8 +29,8 @@ export const userReducer = (state: User, action: UserActions): User => {
 };
 
 interface UserContextProps {
-    userState: User;
-    userDispatch: React.Dispatch<UserActions>;
+  userState: User;
+  userDispatch: React.Dispatch<UserActions>;
 }
 
 const UserContext = createContext<UserContextProps>({

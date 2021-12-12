@@ -17,32 +17,80 @@ import { baseUrl } from '../../client';
 import { AccountInfo, ProfileHeader, Text, TextInput, View } from '../../Components';
 import Button from '../../Components/Button';
 import Colors from '../../Constants/Colors';
+import { Transfer } from '../../types/transfer';
+import { Account } from '../../types/account';
 
 const MakeTransferScreen = ({ route }: any) => {
   const userContext = useContext(UserContext);
   const { userState, userDispatch } = userContext;
 
-  const [showPopUp, setShowPopUp] = useState(false);
-
   const { currentChanges, setCurrentChanges } = route.params;
 
+  const [showValidationPopUp, setShowValidationPopUp] = useState(false);
+  const [showAccountList, setShowAccountList] = useState(false);
+
   const [accounts, setAccounts] = useState([]);
-  const [choosedAccount, setChoosedAccount] = useState({ accountNumber: 0, sold: 0 });
-  // TODO: object transfer in types
-  const initialTransaction = {
-    from: {
-      id: 0,
-    },
-    to: {
-      id: 0,
-    },
-    amount: 0,
-    label: '',
-  };
-  const [transferInfos, setTransferInfos] = useState(initialTransaction);
+  const [choosedAccount, setChoosedAccount] = useState<Account>();
+  const [transferInfos, setTransferInfos] = useState<Transfer>();
 
   const [error, setError] = useState(false);
-  const [visible, setVisible] = useState(false);
+
+  const renderItem = (item: { index: number; item: any }) => (
+    <AccountInfo
+      userName={userState.name}
+      account={item.item}
+      index={item.index}
+      setValue={(account) => {
+        handlePress(account);
+      }}
+    />
+  );
+
+  const accountListModal = (
+    <Modal
+      animationType="slide"
+      transparent
+      visible={showAccountList}
+      onRequestClose={() => {
+        setShowAccountList(!showAccountList);
+      }}
+    >
+      <TouchableOpacity
+        style={styles.TouchableOpacity}
+        activeOpacity={1}
+        onPressOut={() => {
+          setShowAccountList(false);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <TouchableWithoutFeedback>
+            <View style={[styles.modalView]}>
+              <Entypo
+                style={styles.cross}
+                name="cross"
+                size={24}
+                color="black"
+                onPress={() => setShowAccountList(!showAccountList)}
+              />
+              <FlatList
+                style={styles.scrollContainer}
+                data={accounts}
+                renderItem={renderItem}
+                keyExtractor={(off, index) => index.toString()}
+              />
+              <Button
+                fullWidth
+                color={Colors.secondary}
+                onPress={() => setShowAccountList(!showAccountList)}
+              >
+                Annuler
+              </Button>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableOpacity>
+    </Modal>
+  );
 
   useEffect(() => {
     axios.get(`${baseUrl}/users/${userState.id}/accounts`).then((response) => {
@@ -52,26 +100,30 @@ const MakeTransferScreen = ({ route }: any) => {
         ...prevTransactionInfos,
         from: response.data[0],
       }));
+    }).catch((error) => {
+      alert('SERVER ERROR !');
     });
   }, [currentChanges]);
 
   const handleSubmit = async () => {
-    console.log('transfer1 :', transferInfos);
     axios
       .post(`${baseUrl}/transfer`, transferInfos)
       .then((response) => {
-        console.log('transfer :', response.data);
         if (response.data) {
           setError(false);
-          setShowPopUp(true);
-          setTransferInfos(initialTransaction);
+          setShowValidationPopUp(true);
+          setTransferInfos((prevTransactionInfos) => ({
+            ...prevTransactionInfos,
+            id: NaN,
+            amount: NaN,
+            label: '',
+          }));
           setCurrentChanges(new Date());
         } else {
           setError(true);
         }
       })
       .catch((error) => {
-        // TODO:
         alert('SERVER ERROR !!');
       });
   };
@@ -85,18 +137,18 @@ const MakeTransferScreen = ({ route }: any) => {
         sold: account.sold,
       },
     }));
-    setVisible(false);
+    setShowAccountList(false);
   };
 
   const chooseDebitAccount = () => {
-    setVisible(true);
+    setShowAccountList(true);
   };
 
   const cancelPopUp = () => {
-    setShowPopUp(false);
+    setShowValidationPopUp(false);
   };
 
-  const popUp = (
+  const validationPopUp = (
     <TouchableOpacity style={styles.popUpOpacity} onPress={cancelPopUp}>
       <View style={styles.popUp}>
         <View style={styles.rightCode}>
@@ -109,60 +161,12 @@ const MakeTransferScreen = ({ route }: any) => {
     </TouchableOpacity>
   );
 
-  const renderItem = (item: { index: number; item: any }) => (
-    <AccountInfo
-      userName={userState.name}
-      account={item.item}
-      index={item.index}
-      setValue={(account) => {
-        handlePress(account);
-      }}
-    />
-  );
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
         <StatusBar animated backgroundColor={Colors.black} />
-        <Modal
-          animationType="slide"
-          transparent
-          visible={visible}
-          onRequestClose={() => {
-            setVisible(!visible);
-          }}
-        >
-          <TouchableOpacity
-            style={styles.TouchableOpacity}
-            activeOpacity={1}
-            onPressOut={() => {
-              setVisible(false);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <TouchableWithoutFeedback>
-                <View style={[styles.modalView, { backgroundColor: '#FFFFFF' }]}>
-                  <Entypo
-                    style={styles.cross}
-                    name="cross"
-                    size={24}
-                    color="black"
-                    onPress={() => setVisible(!visible)}
-                  />
-                  <FlatList
-                    style={styles.scrollContainer}
-                    data={accounts}
-                    renderItem={renderItem}
-                    keyExtractor={(off, index) => index.toString()}
-                  />
-                  <Button fullWidth color={Colors.secondary} onPress={() => setVisible(!visible)}>
-                    Annuler
-                  </Button>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableOpacity>
-        </Modal>
-        {showPopUp && popUp}
+        {accountListModal}
+        {showValidationPopUp && validationPopUp}
         <ProfileHeader userName={userState.name} />
         <View style={styles.form}>
           <View style={styles.accountView}>
@@ -195,8 +199,9 @@ const MakeTransferScreen = ({ route }: any) => {
             <TextInput
               fullWidth
               label="ID compte"
-              color="#222222"
-              value={transferInfos.to.id}
+              keyboardType="numeric"
+              color={Colors.primary}
+              value={transferInfos?.to?.id}
               onChangeText={(id: number) => {
                 setTransferInfos((prevTransactionInfos) => ({
                   ...prevTransactionInfos,
@@ -211,9 +216,10 @@ const MakeTransferScreen = ({ route }: any) => {
           <View style={styles.inputs}>
             <TextInput
               fullWidth
-              label="montant"
-              color="#222222"
-              value={transferInfos.amount}
+              keyboardType="numeric"
+              label="Montant"
+              color={Colors.primary}
+              value={transferInfos?.amount}
               onChangeText={(amount: number) => {
                 setTransferInfos((prevTransactionInfos) => ({
                   ...prevTransactionInfos,
@@ -224,9 +230,9 @@ const MakeTransferScreen = ({ route }: any) => {
             />
             <TextInput
               fullWidth
-              label="label"
-              color="#222222"
-              value={transferInfos.label}
+              label="Label"
+              color={Colors.primary}
+              value={transferInfos?.label}
               onChangeText={(label: string) => {
                 setTransferInfos((prevTransactionInfos) => ({
                   ...prevTransactionInfos,

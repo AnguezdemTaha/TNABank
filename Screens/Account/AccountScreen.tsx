@@ -1,26 +1,32 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { FlatList, StatusBar } from 'react-native';
 import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
 import styles from './accountStyle';
 import { UserContext } from '../../Context/userContext';
 import { baseUrl } from '../../client';
-import Button from '../../Components/Button';
-import { AccountInfo, ProfileHeader, Text, View } from '../../Components';
+import { Button, AccountInfo, ProfileHeader, Text, View } from '../../Components';
+
 import Header from '../../Components/Header';
 import Colors from '../../Constants/Colors';
 import { TransferScreen } from '../../Constants/Screens';
+import { Account } from '../../types/account';
 
 const AccountScreen = ({ navigation }: any) => {
   const userContext = useContext(UserContext);
   const { userState, userDispatch } = userContext;
 
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState<Account[]>();
 
+  const isFocused = useIsFocused();
   useEffect(() => {
-    axios.get(`${baseUrl}/users/${userState.id}/accounts`).then((response) => {
-      setAccounts(response.data);
-    });
-  }, []);
+    axios
+      .get(`${baseUrl}/users/${userState.id}/accounts`)
+      .then((response) => {
+        setAccounts(response.data);
+      })
+      .catch((error) => alert('SERVER ERROR !'));
+  }, [isFocused]);
 
   const handleSubmit = async () => {
     navigation.navigate(TransferScreen);
@@ -36,7 +42,7 @@ const AccountScreen = ({ navigation }: any) => {
       <Header navigation={navigation} />
       <ProfileHeader userName={userState.name} />
       <View style={styles.accountList}>
-        <Text style={styles.accounts} variant="title">
+        <Text style={styles.accountsText} variant="title">
           Mes comptes
         </Text>
         <FlatList

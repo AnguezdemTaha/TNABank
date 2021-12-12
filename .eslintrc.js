@@ -55,6 +55,8 @@ module.exports = {
             "always",
         ],
         "prettier/prettier": "error",
+        // TODO: see eslint probleme with prettier
+        "prettier/prettier": 0,
     },
     settings: {
         "import/parsers": {

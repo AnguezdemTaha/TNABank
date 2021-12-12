@@ -1,27 +1,24 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
-import { MaterialIcons, Ionicons, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Text from './Text';
 import Colors from '../Constants/Colors';
 
 type AccountProps = {
   userName: string;
-  sold: NavigationStackProp;
 };
 export type AccountInfosProps = AccountProps & React.ComponentProps<typeof View>;
 
 const ProfileHeader: React.FC<AccountInfosProps> = (props: AccountInfosProps) => {
-  const { style, userName, ...otherProps } = props;
+  const { style, userName } = props;
 
   return (
-    <View style={styles.titleView}>
+    <View style={[styles.titleView, style]}>
       <MaterialIcons name="face" size={60} color="black" />
       <View>
         <Text style={styles.userName} variant="title">
           {userName.toUpperCase()}
         </Text>
-
         <View style={styles.email}>
           <AntDesign name="mail" size={24} color="black" />
           <Text style={styles.text} variant="paragraph">

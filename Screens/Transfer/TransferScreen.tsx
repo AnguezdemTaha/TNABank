@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Tabs, View } from '../../Components';
 import TransfersHistoryScreen from './TransfersHistoryScreen';
@@ -7,9 +7,7 @@ import Header from '../../Components/Header';
 
 const TransferScreen = function ({ navigation }: any) {
   const [currentChanges, setCurrentChanges] = useState(false);
-  useEffect(() => {
-    console.log(currentChanges);
-  }, [currentChanges]);
+
   const screens = useMemo(
     () => [
       {

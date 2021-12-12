@@ -6,31 +6,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  accountList: {
-    maxHeight: '80%',
-  },
-  inputLabelAccount: {
-    marginTop: 12,
-  },
-  scrollContainer: {
-    flex: 0.5,
+  form: {
     width: '100%',
-    marginBottom: 12,
-  },
-  transferButton: {
-    marginTop: 40,
+    alignItems: 'center',
   },
   accountView: {
     width: '90%',
     justifyContent: 'space-between',
     borderBottomColor: 'black',
   },
-  creditAccountView: {
-    width: '90%',
-    justifyContent: 'space-between',
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    marginBottom: 24,
+  account: {
+    fontSize: 24,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    color: Colors.green,
+    marginBottom: 14,
   },
   accountInfos: {
     flexDirection: 'row',
@@ -39,7 +29,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginBottom: 24,
   },
-  creditAccountInfos: {},
   userName: {
     color: Colors.secondary,
     fontSize: 18,
@@ -57,26 +46,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'column-reverse',
   },
-  form: {
-    width: '100%',
-    alignItems: 'center',
+  creditAccountView: {
+    width: '90%',
+    justifyContent: 'space-between',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginBottom: 24,
   },
   inputs: {
     width: '90%',
   },
-  account: {
-    fontSize: 24,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-    color: Colors.green,
-    marginBottom: 14,
+  inputLabelAccount: {
+    marginTop: 12,
   },
-  cross: {
-    position: 'absolute',
-    right: 0,
-    marginHorizontal: 10,
-    marginVertical: 10,
+  accountList: {
+    maxHeight: '80%',
   },
+
   TouchableOpacity: {
     flex: 1,
   },
@@ -112,9 +98,26 @@ const styles = StyleSheet.create({
     width: 70,
     marginHorizontal: 15,
   },
+
+  creditAccountInfos: {},
+  scrollContainer: {
+    flex: 0.5,
+    width: '100%',
+    marginBottom: 12,
+  },
+  transferButton: {
+    marginTop: 40,
+  },
   helperText: {
     fontSize: 15,
     alignSelf: 'center',
+  },
+
+  cross: {
+    position: 'absolute',
+    right: 0,
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
   popUpOpacity: {
     position: 'absolute',
@@ -125,7 +128,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: Dimensions.get('window').height,
     flex: 1,
-    // backgroundColor: 'rgba(0,0,0, .4)',
     zIndex: 10,
   },
   popUp: {
