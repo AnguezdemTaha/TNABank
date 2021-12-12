@@ -1,1 +1,1 @@
-export const baseUrl = 'https://tnabank-app.herokuapp.com/';
+export const baseUrl = 'https://tnabank-app.herokuapp.com';
